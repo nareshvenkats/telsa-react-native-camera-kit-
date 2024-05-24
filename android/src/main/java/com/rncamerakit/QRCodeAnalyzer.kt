@@ -19,9 +19,12 @@ class QRCodeAnalyzer (
         val scanner = BarcodeScanning.getClient()
         scanner.process(inputImage)
             .addOnSuccessListener { barcodes ->
-                val strBarcodes = mutableListOf<Barcode>()
-                barcodes.forEach { barcode ->
-                    strBarcodes.add(barcode ?: return@forEach)
+                val strBarcodes = mutableListOf<String>()
+                for (barcode in barcodes) {
+                    val rawValue = barcode.rawValue
+                    if (rawValue != null) {
+                        strBarcodes.add(rawValue)
+                    }
                 }
                 onQRCodesDetected(strBarcodes)
             }
